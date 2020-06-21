@@ -1,0 +1,19 @@
+name: Create GitHub Secret Action
+description: Create or update a Github Secret
+inputs:
+  pa_token:
+    description: Personal access token with permission to modify repository
+      secrets
+    required: true
+  name:
+    description: Name of the secret that should be created or updated
+    required: true
+  value:
+    description: Value of the secret that should be created or updated
+    required: true
+outputs:
+  status:
+    description: Response status code
+runs:
+  using: "node12"
+  main: "dist/index.js"

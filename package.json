@@ -1,0 +1,23 @@
+{
+  "name": "create-github-secret-action",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "Create or update a Github Secret",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "gliech",
+  "license": "MIT",
+  "repository": "github:gliech/create-github-secret-action",
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.3"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^3.0.0",
+    "tweetsodium": "0.0.5"
+  }
+}
