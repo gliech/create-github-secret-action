@@ -1,6 +1,6 @@
 {
   "name": "create-github-secret-action",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": "true",
   "description": "Create or update a Github Secret",
   "main": "dist/index.js",
