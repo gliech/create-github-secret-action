@@ -13,11 +13,29 @@
   "license": "MIT",
   "repository": "github:gliech/create-github-secret-action",
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3"
+    "semantic-release": "^17.1.1",
+    "@vercel/ncc": "^0.23.0"
   },
   "dependencies": {
     "@actions/core": "^1.2.4",
     "@actions/github": "^3.0.0",
     "tweetsodium": "0.0.5"
+  },
+  "release": {
+    "repositoryUrl": "git@github.com:gliech/create-github-secret-action.git",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "dist/index.js"
+          ],
+          "message": "build(release): compiled action for ${nextRelease.version}\n\n[skip ci]"
+        }
+      ],
+      "@semantic-release/github"
+    ]
   }
 }
