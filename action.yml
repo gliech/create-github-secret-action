@@ -1,5 +1,5 @@
 name: Create GitHub Secret Action
-description: Create or update a Github Secret
+description: Create or update a GitHub repository secret
 inputs:
   pa_token:
     description: Personal access token with permission to modify repository
