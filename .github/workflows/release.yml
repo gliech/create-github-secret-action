@@ -61,3 +61,9 @@ jobs:
           GIT_COMMITTER_NAME: ${{ github.actor }}
           GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
           GITHUB_TOKEN: ${{ github.token }}
+
+      - name: "[release] Update major version branch"
+        uses: Embraser01/update-git-branch-action@v1.0.0
+        with:
+          branch: v1
+          githubToken: ${{ github.toke }}

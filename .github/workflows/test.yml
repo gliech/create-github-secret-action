@@ -7,7 +7,6 @@ on:
       - action.yml
       - index.js
       - package.json
-      - .github/workflows/test.yml
 name: test
 jobs:
   main:
