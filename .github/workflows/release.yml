@@ -32,7 +32,7 @@ jobs:
         with:
           name: TEST_SECRET
           value: ${{ github.sha }}
-          pa_token: §{{ secrets.PA_TOKEN_TEST }}
+          pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: "[release] Create new release"
         run: npm run release
