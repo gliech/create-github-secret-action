@@ -36,7 +36,6 @@ jobs:
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: "[test] Request secret metadata"
-        id: get_secret
         uses: octokit/request-action@v2.x
         with:
           route: GET /repos/:repository/actions/secrets/:secret_name
@@ -45,4 +44,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
 
-      - run: "echo '${{ steps.get_secret.outputs }}'"
+      - name: "[test] Delete secret"
+        if: always()
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ github.repository }}
+          secret_name: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}

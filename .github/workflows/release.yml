@@ -30,9 +30,28 @@ jobs:
       - name: "[test] Create a secret"
         uses: ./
         with:
-          name: TEST_SECRET
-          value: ${{ github.sha }}
+          name: ${{ github.sha }}
+          value: test
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
+
+      - name: "[test] Request secret metadata"
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ github.repository }}
+          secret_name: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
+
+      - name: "[test] Delete secret"
+        if: always()
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ github.repository }}
+          secret_name: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: "[release] Create new release"
         run: npm run release
