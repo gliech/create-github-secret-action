@@ -31,7 +31,7 @@ jobs:
       - name: "[test] Create a secret"
         uses: ./
         with:
-          name: ${{ github.sha }}
+          name: TEST_${{ github.sha }}
           value: test
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
@@ -40,7 +40,7 @@ jobs:
         with:
           route: GET /repos/:repository/actions/secrets/:secret_name
           repository: ${{ github.repository }}
-          secret_name: ${{ github.sha }}
+          secret_name: TEST_${{ github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
 
@@ -50,6 +50,6 @@ jobs:
         with:
           route: DELETE /repos/:repository/actions/secrets/:secret_name
           repository: ${{ github.repository }}
-          secret_name: ${{ github.sha }}
+          secret_name: TEST_${{ github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
