@@ -1,3 +1,4 @@
+---
 on:
   push:
     branches:
@@ -12,28 +13,28 @@ jobs:
     name: main
     runs-on: ubuntu-latest
     steps:
-      - name: [build] Checkout repository
+      - name: "[build] Checkout repository"
         uses: actions/checkout@v2
 
-      - name: [build] Install nodejs
+      - name: "[build] Install nodejs"
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
 
-      - name: [build] Install dependencies
+      - name: "[build] Install dependencies"
         run: npm ci
 
-      - name: [build] Compile action
+      - name: "[build] Compile action"
         run: npm run build
 
-      - name: [test] Create a secret
+      - name: "[test] Create a secret"
         uses: ./
         with:
           name: TEST_SECRET
           value: ${{ github.sha }}
           pa_token: §{{ secrets.PA_TOKEN_TEST }}
 
-      - name: [release] Create new release
+      - name: "[release] Create new release"
         run: npm run release
         env:
           GIT_AUTHOR_NAME: ${{ github.actor }}
