@@ -6,7 +6,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build index.js",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "release-test": "semantic-release --no-ci --dry-run"
   },
   "keywords": [],
   "author": "gliech",

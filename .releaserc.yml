@@ -8,8 +8,8 @@ plugins:
         - files:
             - package.json
             - package-lock.json
-          from: "^  \"version\": \".+\","
-          to: "  \"version\": \"${nextRelease.version}\""
+          from: "\n  \"version\": \".+\","
+          to: "\n  \"version\": \"${nextRelease.version}\","
           results:
             - file: package.json
               hasChanged: true
