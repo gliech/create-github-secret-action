@@ -8,7 +8,7 @@ on:
       - index.js
       - package.json
       - .github/workflows/test.yml
-name: release
+name: test
 jobs:
   main:
     name: main
