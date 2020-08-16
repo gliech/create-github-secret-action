@@ -34,3 +34,15 @@ jobs:
           name: TEST_SECRET
           value: ${{ github.sha }}
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
+
+      - name: "[test] Read secret value"
+        id: get_secret
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ github.repository }}
+          secret_name: TEST_SECRET
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
+
+      - run: "echo '${{ steps.get_secret.outputs.data }}'"
