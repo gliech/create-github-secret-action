@@ -13,8 +13,11 @@
   "license": "MIT",
   "repository": "github:gliech/create-github-secret-action",
   "devDependencies": {
-    "semantic-release": "^17.1.1",
-    "@vercel/ncc": "^0.23.0"
+    "@google/semantic-release-replace-plugin": "^1.0.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@vercel/ncc": "^0.23.0",
+    "semantic-release": "^17.1.1"
   },
   "dependencies": {
     "@actions/core": "^1.2.4",
@@ -26,13 +29,46 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": [
+                "package.json",
+                "package-lock.json"
+              ],
+              "from": "^  \"version\": \".+\",",
+              "to": "  \"version\": \"${nextRelease.version}\"",
+              "results": [
+                {
+                  "file": "package.json",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                },
+                {
+                  "file": "package-lock.json",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
       [
         "@semantic-release/git",
         {
           "assets": [
-            "dist/index.js"
+            "dist/index.js",
+            "package.json",
+            "package-lock.json"
           ],
-          "message": "build(release): compiled action for ${nextRelease.version}\n\n[skip ci]"
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
         }
       ],
       "@semantic-release/github"
