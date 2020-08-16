@@ -23,7 +23,6 @@ jobs:
       - name: Compile action
         run: npm run build
       - name: Create new release
-        if:
         run: npm run release
         env:
           GIT_AUTHOR_NAME: ${{ github.actor }}
