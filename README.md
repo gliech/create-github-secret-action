@@ -7,7 +7,7 @@ executed
 
 ```yaml
 steps:
-  - uses: gliech/create-github-secret@v1
+  - uses: gliech/create-github-secret-action@v1
     with:
       name: FRONT_DOOR_PASSWORD
       value: Eternia
