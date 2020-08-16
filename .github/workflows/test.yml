@@ -1,11 +1,12 @@
 on:
   push:
-    branches:
+    branches-ignore:
       - master
     paths:
       - action.yml
       - index.js
       - package.json
+      - .github/workflows/test.yml
 name: release
 jobs:
   main:
@@ -32,12 +33,3 @@ jobs:
           name: TEST_SECRET
           value: ${{ github.sha }}
           pa_token: §{{ secrets.PA_TOKEN_TEST }}
-
-      - name: [release] Create new release
-        run: npm run release
-        env:
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GITHUB_TOKEN: ${{ github.token }}
