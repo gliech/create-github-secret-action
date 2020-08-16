@@ -1,13 +1,13 @@
 ---
 on:
   push:
-    branches:
+    branches-ignore:
       - master
     paths:
       - action.yml
       - index.js
       - package.json
-name: release
+name: test
 jobs:
   main:
     name: main
@@ -52,18 +52,3 @@ jobs:
           secret_name: TEST_${{ github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
-
-      - name: "[release] Create new release"
-        run: npm run release
-        env:
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: "[release] Update major version branch"
-        uses: Embraser01/update-git-branch-action@v1.0.0
-        with:
-          branch: v1
-          githubToken: ${{ github.toke }}
