@@ -19,4 +19,4 @@ runs:
   main: "dist/index.js"
 branding:
   color: yellow
-  icon: key
+  icon: eye-off
