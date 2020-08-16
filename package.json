@@ -23,55 +23,5 @@
     "@actions/core": "^1.2.4",
     "@actions/github": "^3.0.0",
     "tweetsodium": "0.0.5"
-  },
-  "release": {
-    "repositoryUrl": "git@github.com:gliech/create-github-secret-action.git",
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      [
-        "@google/semantic-release-replace-plugin",
-        {
-          "replacements": [
-            {
-              "files": [
-                "package.json",
-                "package-lock.json"
-              ],
-              "from": "^  \"version\": \".+\",",
-              "to": "  \"version\": \"${nextRelease.version}\"",
-              "results": [
-                {
-                  "file": "package.json",
-                  "hasChanged": true,
-                  "numMatches": 1,
-                  "numReplacements": 1
-                },
-                {
-                  "file": "package-lock.json",
-                  "hasChanged": true,
-                  "numMatches": 1,
-                  "numReplacements": 1
-                }
-              ],
-              "countMatches": true
-            }
-          ]
-        }
-      ],
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "dist/index.js",
-            "package.json",
-            "package-lock.json"
-          ],
-          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-        }
-      ],
-      "@semantic-release/github"
-    ]
   }
 }
