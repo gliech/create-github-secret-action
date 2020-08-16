@@ -31,8 +31,8 @@ jobs:
       - name: "[test] Create a secret"
         uses: ./
         with:
-          name: TEST_SECRET
-          value: ${{ github.sha }}
+          name: ${{ github.sha }}
+          value: test
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: "[test] Read secret value"
@@ -45,4 +45,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
 
-      - run: "echo '${{ steps.get_secret.outputs.data }}'"
+      - run: "echo '${{ steps.get_secret.outputs }}'"
