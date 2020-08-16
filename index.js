@@ -16,14 +16,17 @@ async function run() {
     const context = github.context;
 
     // Retrieve repository public key and encrypt secret value
+    core.info("Retrieving repository public key")
     const { data: repo_public_key } = await octokit.actions.getRepoPublicKey(context.repo);
 
+    core.info("Encrypting secret value")
     const plain_value_bytes = Buffer.from(secret_value);
     const public_key_bytes = Buffer.from(repo_public_key.key, 'base64');
     const secret_value_bytes = sodium.seal(plain_value_bytes, public_key_bytes);
     const signed_secret_value = Buffer.from(secret_value_bytes).toString('base64');
 
     // Create or update secret
+    core.info("Updating repository secret")
     const { status } = await octokit.actions.createOrUpdateRepoSecret({
       ...context.repo,
       secret_name: secret_name,
