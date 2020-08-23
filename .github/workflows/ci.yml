@@ -58,7 +58,7 @@ jobs:
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: Assert action output
-        if: steps.self.outputs.status != "201"
+        if: steps.self.outputs.status != '201'
         run: echo "::error::Expected HTTP status code 201 got
           ${{steps.self.outputs.status}}"
 
@@ -104,13 +104,14 @@ jobs:
           pa_token: ${{ secrets.PA_TOKEN_TEST }}
 
       - name: Assert action output
-        if: ${{steps.self.outputs.status}} != "204"
+        if: ${{steps.self.outputs.status}} != '204'
         run: echo "::error::Expected HTTP status code 204 got
           ${{steps.self.outputs.status}}"
 
   release:
     name: release
-    if: contains(['refs/heads/master','refs/heads/next'], github.ref)
+    if: contains(fromJson('["refs/heads/master","refs/heads/next"]'),
+      github.refs)
     runs-on: ubuntu-latest
     needs:
       - test_create
