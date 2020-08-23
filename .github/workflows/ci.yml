@@ -29,6 +29,9 @@ jobs:
       - name: Compile action
         run: npm run build
 
+      - name: Remove node_modules directory
+        run: rm -r ./node_modules
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
@@ -116,6 +119,14 @@ jobs:
         with:
           name: main
           path: ./
+
+      - name: Install nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Create new release
         run: npm run release
