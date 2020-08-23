@@ -108,7 +108,7 @@ jobs:
   release:
     name: release new version
     if: contains(fromJson('["refs/heads/master","refs/heads/next"]'),
-      github.refs)
+      github.ref)
     runs-on: ubuntu-latest
     needs:
       - test_create
