@@ -29,25 +29,25 @@ jobs:
       - name: Compile action
         run: npm run build
 
+      - name: Remove node_modules directory
+        run: rm -r ./node_modules
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: index
-          path: dist/index.js
+          name: main
+          path: ./
 
   test_create:
     name: test secret creation
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
-          name: index
-          path: dist/
+          name: main
+          path: ./
 
       - name: Create a secret
         id: self
@@ -60,7 +60,7 @@ jobs:
       - name: Assert action output
         if: steps.self.outputs.status != '201'
         run: echo "::error::Expected HTTP status code 201 got
-          ${{steps.self.outputs.status}}"
+          ${{steps.self.outputs.status}}"; exit 1
 
       - name: Confirm secret creation
         uses: octokit/request-action@v2.x
@@ -86,14 +86,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
-          name: index
-          path: dist/
+          name: main
+          path: ./
 
       - name: Update a secret
         id: self
@@ -106,7 +103,7 @@ jobs:
       - name: Assert action output
         if: ${{steps.self.outputs.status}} != '204'
         run: echo "::error::Expected HTTP status code 204 got
-          ${{steps.self.outputs.status}}"
+          ${{steps.self.outputs.status}}"; exit 1
 
   release:
     name: release new version
@@ -117,14 +114,11 @@ jobs:
       - test_create
       - test_update
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          name: index
-          path: dist/
-
       - name: Download build artifact
         uses: actions/download-artifact@v2
+        with:
+          name: main
+          path: ./
 
       - name: Create new release
         run: npm run release
@@ -145,4 +139,4 @@ jobs:
       - name: Delete run artifact
         uses: geekyeggo/delete-artifact@v1
         with:
-          name: index
+          name: main
