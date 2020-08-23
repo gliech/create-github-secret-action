@@ -16,7 +16,7 @@ async function run() {
     const context = github.context;
 
     // Retrieve repository public key and encrypt secret value
-    core.info("Retrieving repository public key")
+    core.info(`Retrieving public key for repository ${context.repo.owner}/${context.repo.repo}`)
     const { data: repo_public_key } = await octokit.actions.getRepoPublicKey(context.repo);
 
     core.info("Encrypting secret value")
@@ -26,13 +26,22 @@ async function run() {
     const signed_secret_value = Buffer.from(secret_value_bytes).toString('base64');
 
     // Create or update secret
-    core.info("Updating repository secret")
+    core.info(`Setting repository secret "${secret_name}"`)
     const { status } = await octokit.actions.createOrUpdateRepoSecret({
       ...context.repo,
       secret_name: secret_name,
       encrypted_value: signed_secret_value,
       key_id: repo_public_key.key_id
     });
+
+    const response_codes = {
+      201: 'created',
+      204: 'updated'
+    }
+
+    if (status in response_codes) {
+      core.info(`Successfully ${response_codes[status]} repository secret "${secret_name}"`)
+    }
 
     core.setOutput("status", status);
   } catch (err) {
