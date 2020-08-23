@@ -29,9 +29,6 @@ jobs:
       - name: Compile action
         run: npm run build
 
-      - name: Remove node_modules directory
-        run: rm -r ./node_modules
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
