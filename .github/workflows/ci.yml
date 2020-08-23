@@ -12,7 +12,7 @@ on:
 name: ci
 jobs:
   build:
-    name: build index.js
+    name: build dist/index.js
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -55,7 +55,7 @@ jobs:
         with:
           name: TEST_${{ github.sha }}
           value: test
-          pa_token: ${{ secrets.PA_TOKEN_TEST }}
+          pa_token: ${{ secrets.PA_TOKEN_PIPELINE }}
 
       - name: Assert action output
         if: steps.self.outputs.status != '201'
@@ -69,7 +69,7 @@ jobs:
           repository: ${{ github.repository }}
           secret_name: TEST_${{ github.sha }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
       - name: Delete secret
         if: always()
@@ -79,10 +79,10 @@ jobs:
           repository: ${{ github.repository }}
           secret_name: TEST_${{ github.sha }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_TEST }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
   test_update:
-    name: test secret updating
+    name: test secret update
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -98,10 +98,10 @@ jobs:
         with:
           name: TEST_UPDATE
           value: ${{ github.sha }}
-          pa_token: ${{ secrets.PA_TOKEN_TEST }}
+          pa_token: ${{ secrets.PA_TOKEN_PIPELINE }}
 
       - name: Assert action output
-        if: ${{steps.self.outputs.status}} != '204'
+        if: steps.self.outputs.status != '204'
         run: echo "::error::Expected HTTP status code 204 got
           ${{steps.self.outputs.status}}"; exit 1
 
@@ -127,7 +127,7 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
           GIT_COMMITTER_NAME: ${{ github.actor }}
           GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
   cleanup:
     name: cleanup
