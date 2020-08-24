@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          refs: ${{ env.VERSION_PREFIX }}
+          ref: ${{ env.VERSION_PREFIX }}
 
       - name: Fast-forward branch to newest version
         run: |
