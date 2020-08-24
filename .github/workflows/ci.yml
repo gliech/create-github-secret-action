@@ -135,7 +135,7 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
           GIT_COMMITTER_NAME: ${{ github.actor }}
           GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
+          GITHUB_TOKEN: ${{ github.token }}
 
   cleanup:
     name: cleanup
