@@ -5,6 +5,10 @@ inputs:
     description: Personal access token with permission to modify repository
       secrets
     required: true
+  location:
+    description: Name of the repository in the form 'owner/repo'. Defaults to
+      the repository in which the action is executed
+    required: false
   name:
     description: Name of the secret that should be created or updated
     required: true
