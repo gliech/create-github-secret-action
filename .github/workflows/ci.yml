@@ -9,7 +9,7 @@ on:
       - index.js
       - package.json
       - .github/workflows/ci.yml
-name: ci
+name: release
 jobs:
   build:
     name: build dist/index.js
