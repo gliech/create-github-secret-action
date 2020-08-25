@@ -3,7 +3,7 @@ const github = require("@actions/github");
 const sodium = require('tweetsodium');
 
 class GithubLocation {
-  contructor(location_input) {
+  constructor(location_input) {
     if (location_input) {
       const [owner, repo] = location_input.split('/')
       this.data = {owner, repo}
