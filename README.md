@@ -2,7 +2,7 @@
 
 ![release](https://github.com/gliech/create-github-secret-action/workflows/release/badge.svg)
 
-This action can create or updates a GitHub repository secret.
+This action can be used to create or update a GitHub repository secret.
 
 ## Usage
 
@@ -44,6 +44,10 @@ GitHub Repository where you want to create/update a secret. Expects the notation
 
 #### `pa_token`
 **Required** Personal access token with permission to modify repository secrets.
+> For more information on PATs see the GitHub docs article on [creating a
+> personal access token][1]. The GitHub Secrets API requires the `repo` scope to
+> modify secrets in private repositories and the `public_repo` scope for public
+> repositories.
 
 ## Outputs
 
@@ -55,3 +59,4 @@ secret.
 
 This project is licensed under the terms of the [MIT License](LICENSE)
 
+[1]: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
