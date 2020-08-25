@@ -1,19 +1,23 @@
 name: Create GitHub Secret Action
 description: Create or update a GitHub repository secret
 inputs:
+  name:
+    description: Name of the secret that you want to create/update
+    required: true
+  value:
+    description: Value of the secret that you want to create/update
+    required: true
+  location:
+    description: GitHub Repository where you want to create/update a secret
+    required: false
   pa_token:
     description: Personal access token with permission to modify repository
       secrets
     required: true
-  name:
-    description: Name of the secret that should be created or updated
-    required: true
-  value:
-    description: Value of the secret that should be created or updated
-    required: true
 outputs:
   status:
-    description: Response status code
+    description: HTTP Status Code of the request against the GitHub API that
+      created/updated the secret
 runs:
   using: "node12"
   main: "dist/index.js"
