@@ -2,12 +2,11 @@
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      - '!v[0-9]+.0.0'
-name: post-release
+      - v[0-9]+.0.0
+name: post-major-release
 jobs:
   main:
-    name: update major version pointer
+    name: create major version pointer
     runs-on: ubuntu-latest
     steps:
       - name: Get version prefix
@@ -15,16 +14,13 @@ jobs:
           GIT_REF=${{ github.ref }}
           echo "::set-env name=VERSION_PREFIX::${GIT_REF:10:2}"
 
-      - name: Checkout major version branch
+      - name: Checkout new release
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ env.VERSION_PREFIX }}
 
-      - name: Fast-forward branch to newest version
+      - name: Create branch for pointer
         run: |
-          git merge --ff-only --no-edit ${{ github.ref }}
-          git push
+          git branch $VERSION_PREFIX
+          git push --set-upstream origin $VERSION_PREFIX
         env:
           GIT_AUTHOR_NAME: ${{ github.actor }}
           GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
