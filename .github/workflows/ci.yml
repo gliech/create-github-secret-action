@@ -34,15 +34,6 @@ jobs:
         with:
           name: main
           path: dist/index.js
-      - name: Delete secret
-        if: always()
-        uses: octokit/request-action@v2.x
-        with:
-          route: DELETE /repos/:repository/actions/secrets/:secret_name
-          repository: ${{ github.repository }}
-          secret_name: TEST_${{ github.sha }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
   test_create:
     name: test secret creation
@@ -80,6 +71,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
+      - name: Delete secret
+        if: always()
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ github.repository }}
+          secret_name: TEST_${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
   test_repo_location:
     name: test secret creation in foreign repository
@@ -120,6 +120,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
+      - name: Delete secret
+        if: always()
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repos/:repository/actions/secrets/:secret_name
+          repository: ${{ env.FOREIGN_REPO }}
+          secret_name: TEST_${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
 
   test_update:
     name: test secret update
