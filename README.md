@@ -2,6 +2,8 @@
 
 This action can create or updates a GitHub repository secret.
 
+![release](https://github.com/gliech/create-github-secret-action/workflows/release/badge.svg)
+
 ## Usage
 
 ```yaml
