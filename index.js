@@ -51,7 +51,7 @@ async function run() {
     }
 
     // Retrieve repository public key and encrypt secret value
-    core.info(`Retrieving public key for ${secret_target.type} ${secret_target}`)
+    core.info(`Retrieving public key for ${secret_target.type} '${secret_target}'`)
     const { data: public_key } = await get_public_key(secret_target.data)
 
     core.info("Encrypting secret value")
@@ -61,7 +61,7 @@ async function run() {
     const signed_secret_value = Buffer.from(secret_value_bytes).toString("base64")
 
     // Create or update secret
-    core.info(`Setting ${secret_target.type} secret "${secret_target}"`)
+    core.info(`Setting ${secret_target.type} secret '${input_name}'`)
     const { status } = await upsert_secret({
       ...secret_target.data,
       secret_name: input_name,
@@ -76,7 +76,10 @@ async function run() {
     }
 
     if (status in response_codes) {
-      core.info(`Successfully ${response_codes[status]} ${secret_target.type} secret "${input_name}"`)
+      core.info(
+        `Successfully ${response_codes[status]} secret '${input_name}' in ` +
+        `${secret_target.short_type.toLowerCase()} '${secret_target}'`
+      )
     } else {
       core.warn
     }
