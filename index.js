@@ -9,7 +9,7 @@ class GithubLocation {
     if (!location_input) {
       const context = github.context
       this.data = context.repo
-    } else if (location_input.contains("/")) {
+    } else if (location_input.includes("/")) {
       const [owner, repo] = location_input.split("/")
       this.data = {owner, repo}
     } else {
