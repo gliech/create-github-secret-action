@@ -176,7 +176,8 @@ jobs:
         uses: ./
         with:
           location: deinopon
-          name: TEST_CREATE_GITHUB_SECRET_ACTION
+          org_visibility: ''
+          name: CREATE_GITHUB_SECRET_ACTION_TEST
           value: ${{ github.sha }}
           pa_token: ${{ secrets.PA_TOKEN_ORG_ADMIN }}
 
