@@ -181,8 +181,8 @@ jobs:
           pa_token: ${{ secrets.PA_TOKEN_ORG_ADMIN }}
 
       - name: Assert action output
-        if: steps.self.outputs.status != '201'
-        run: echo "::error::Expected HTTP status code 201 got
+        if: steps.self.outputs.status != '204'
+        run: echo "::error::Expected HTTP status code 204 got
           ${{steps.self.outputs.status}}"; exit 1
 
   release:
