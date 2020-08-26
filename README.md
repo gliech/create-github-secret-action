@@ -29,17 +29,6 @@ steps:
       pa_token: ${{ secrets.PAT_WRONG_HORDAK }}
 ```
 
-Create a secret in a different repository:
-```yaml
-steps:
-  - uses: gliech/create-github-secret-action@v1
-    with:
-      location: horde-prime/spire-network
-      name: BROADCAST_FREQUENCY
-      value: ${{ secrets.JAMMING_FREQUENCY }}
-      pa_token: ${{ secrets.PAT_WRONG_HORDAK }}
-```
-
 Create a secret in an organization:
 ```yaml
 steps:
@@ -84,6 +73,7 @@ Only used for organization secrets. Can be set to one of 3 values:
 - any other input value will be interpreted as a list of comma-seperated GitHub
   repository IDs, which will cause the created secret to be selectively visible
   only from these repositories
+
 Defaults to `private`.
 > GitHub repository IDs are not repository URLs or names. They are a number used
 > to identify repositories on GitHub specifically. For more information see the

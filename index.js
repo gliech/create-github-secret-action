@@ -78,7 +78,7 @@ async function run() {
     if (status in response_codes) {
       core.info(
         `Successfully ${response_codes[status]} secret '${input_name}' in ` +
-        `${secret_target.short_type.toLowerCase()} '${secret_target}'`
+        `${secret_target.type} '${secret_target}'`
       )
     } else {
       core.warn(
