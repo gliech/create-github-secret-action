@@ -4,47 +4,70 @@ const sodium = require('tweetsodium');
 
 class GithubLocation {
   constructor(location_input) {
-    if (location_input) {
+    this.type = 'repository'
+    this.short_type = 'Repo'
+    if (!location_input) {
+      const context = github.context;
+      this.data = context.repo;
+    } else if (location_input.contains('/')) {
       const [owner, repo] = location_input.split('/')
       this.data = {owner, repo}
     } else {
-      const context = github.context;
-      this.data = context.repo;
+      this.type = 'organization'
+      this.short_type = 'Org'
+      this.data = {org: location_input}
     }
   }
   toString() {
-    return [this.data.owner, this.data.repo].join('/')
+    return Object.values(this.data).join('/')
   }
 }
 
 async function run() {
   try {
     // Get all inputs
-    const input_pat = core.getInput('pa_token');
-    const input_location = core.getInput('location');
     const input_name = core.getInput('name');
     const input_value = core.getInput('value');
 
-    const secret_location = new GithubLocation(input_location)
+    const input_location = core.getInput('location');
+    const secret_target = new GithubLocation(input_location);
 
-    // Retrieve repository public key and encrypt secret value
+    const input_pat = core.getInput('pa_token');
     const octokit = github.getOctokit(input_pat);
-    core.info(`Retrieving public key for repository ${secret_location}`)
-    const { data: repo_public_key } = await octokit.actions.getRepoPublicKey(secret_location.data);
+    const get_public_key = octokit.actions[`get${secret_target.short_type}PublicKey`]
+    const upsert_secret = octokit.actions[`createOrUpdate${secret_target.short_type}Secret`]
+
+    if (secret_targe.type == 'organization') {
+      const input_visibility = core.getInput('org_visibility');
+      if (['all', 'private'].includes(input_visibility)) {
+        const org_arguments = { visibility: input_visibility }
+      } else {
+        const org_arguments = {
+          visibility: 'selected',
+          selected_repositoy_ids: input_visibility.split(',').map(i => i.trim())
+        }
+      }
+    } else {
+      const org_arguments = {}
+    }
+    // Retrieve repository public key and encrypt secret value
+    core.info(`Retrieving public key for ${secret_target.type} ${secret_target}`)
+    const { data: public_key } = await get_public_key(secret_target.data);
 
     core.info("Encrypting secret value")
     const plain_value_bytes = Buffer.from(input_value);
-    const public_key_bytes = Buffer.from(repo_public_key.key, 'base64');
+    const public_key_bytes = Buffer.from(public_key.key, 'base64');
     const secret_value_bytes = sodium.seal(plain_value_bytes, public_key_bytes);
     const signed_secret_value = Buffer.from(secret_value_bytes).toString('base64');
 
     // Create or update secret
-    core.info(`Setting repository secret "${input_name}"`)
-    const { status } = await octokit.actions.createOrUpdateRepoSecret({
-      ...secret_location.data,
+    core.info(`Setting ${secret_target.type} secret "${secret_target}"`)
+    const { status } = await upsert_secret({
+      ...secret_target.data,
       secret_name: input_name,
       encrypted_value: signed_secret_value,
-      key_id: repo_public_key.key_id
+      key_id: public_key.key_id,
+      ...(secret_target.type == 'organization' && {visibility: input_visibility})
     });
 
     const response_codes = {
@@ -53,7 +76,9 @@ async function run() {
     }
 
     if (status in response_codes) {
-      core.info(`Successfully ${response_codes[status]} repository secret "${input_name}"`)
+      core.info(`Successfully ${response_codes[status]} ${secret_target.type} secret "${input_name}"`)
+    } else {
+      core.warn
     }
 
     core.setOutput("status", status);

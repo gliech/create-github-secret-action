@@ -10,6 +10,10 @@ inputs:
   location:
     description: GitHub Repository where you want to create/update a secret
     required: false
+  org_visibility:
+    description: Visibility of a GitHub Org Secret
+    required: false
+    default: 'private'
   pa_token:
     description: Personal access token with permission to modify repository
       secrets
