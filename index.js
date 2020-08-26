@@ -81,7 +81,10 @@ async function run() {
         `${secret_target.short_type.toLowerCase()} '${secret_target}'`
       )
     } else {
-      core.warn
+      core.warn(
+        `Encountered unexpected HTTP status code while creating secret ` +
+        `'${input_name}'. Epected one of '201', '204' but got '${status}'`
+      )
     }
 
     core.setOutput("status", status)
