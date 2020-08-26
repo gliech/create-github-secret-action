@@ -157,6 +157,35 @@ jobs:
         run: echo "::error::Expected HTTP status code 204 got
           ${{steps.self.outputs.status}}"; exit 1
 
+  test_organization:
+    name: test organization secret
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: main
+          path: dist
+
+      - name: Update a secret
+        id: self
+        uses: ./
+        with:
+          location: deinopon
+          org_visibility: ''
+          name: CREATE_GITHUB_SECRET_ACTION_TEST
+          value: ${{ github.sha }}
+          pa_token: ${{ secrets.PA_TOKEN_ORG_ADMIN }}
+
+      - name: Assert action output
+        if: steps.self.outputs.status != '204'
+        run: echo "::error::Expected HTTP status code 204 got
+          ${{steps.self.outputs.status}}"; exit 1
+
   release:
     name: release new version
     if: contains(fromJson('["refs/heads/master","refs/heads/next"]'),
@@ -166,6 +195,7 @@ jobs:
       - test_create
       - test_repo_location
       - test_update
+      - test_organization
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

@@ -1,5 +1,5 @@
 name: Create GitHub Secret Action
-description: Create or update a GitHub repository secret
+description: Create or update a secret in the GitHub Actions API.
 inputs:
   name:
     description: Name of the secret that you want to create/update
@@ -8,11 +8,17 @@ inputs:
     description: Value of the secret that you want to create/update
     required: true
   location:
-    description: GitHub Repository where you want to create/update a secret
+    description: Name of a GitHub repository or organization where you want to
+      create/update a secret
     required: false
+  org_visibility:
+    description: Visibility setting for organization secrets. Accepts `all`,
+      `private` or a comma-seperated list of GitHub repository IDs
+    required: false
+    default: 'private'
   pa_token:
-    description: Personal access token with permission to modify repository
-      secrets
+    description: Personal access token with permission to modify repository or
+      organization secrets
     required: true
 outputs:
   status:
