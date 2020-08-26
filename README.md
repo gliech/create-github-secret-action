@@ -2,8 +2,8 @@
 
 ![release](https://github.com/gliech/create-github-secret-action/workflows/release/badge.svg)
 
-This action can be used to create or update secrets in the GitHub Actions API.
-It supports both repository and organization secrets in a unified input syntax.
+This action can create or update secrets in the GitHub Actions API. It supports
+both repository and organization secrets in a unified input syntax.
 
 ## Usage
 
@@ -49,7 +49,7 @@ steps:
 #### `value`
 **Required** Value of the secret that you want to create/update.
 > This action cannot mask the provided secret value in workflow logs. If you do
-> not want the value to appear the outputs of your workflow runs, you has to be
+> not want the value to appear the outputs of your workflow runs, it has to be
 > masked before it is provided to this action as input.
 
 #### `location`
