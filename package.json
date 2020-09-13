@@ -22,7 +22,7 @@
     "conventional-changelog-conventionalcommits": "^4.0.0"
   },
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.2.5",
     "@actions/github": "^3.0.0",
     "tweetsodium": "0.0.5"
   }
