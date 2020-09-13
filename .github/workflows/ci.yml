@@ -1,14 +1,8 @@
 ---
 on:
   push:
-    branches-ignore: []
-    tags-ignore:
-      - v[0-9]+.[0-9]+.[0-9]+**
-    paths:
-      - action.yml
-      - index.js
-      - package.json
-      - .github/workflows/ci.yml
+    branches: master
+  pull_request:
 name: release
 jobs:
   build:
