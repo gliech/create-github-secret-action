@@ -1,0 +1,16 @@
+---
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: deps
+      prefix-development: chore(deps)
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: ci(deps)
