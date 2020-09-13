@@ -1,3 +1,15 @@
+## [1.4.2](https://github.com/gliech/create-github-secret-action/compare/v1.4.1...v1.4.2) (2020-09-13)
+
+
+### Build System
+
+* **deps:** bump node-fetch from 2.6.0 to 2.6.1 ([6819a01](https://github.com/gliech/create-github-secret-action/commit/6819a01761727c547145a3f255897a7918c301bd))
+
+
+### Dependency Updates
+
+* bump @actions/github from 3.0.0 to 4.0.0 ([370e5d8](https://github.com/gliech/create-github-secret-action/commit/370e5d89b5e7ab00285c7aa5879ee71d2ae560e4))
+
 ## [1.4.1](https://github.com/gliech/create-github-secret-action/compare/v1.4.0...v1.4.1) (2020-09-13)
 
 
