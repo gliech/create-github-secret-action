@@ -1,8 +1,126 @@
 ---
 plugins:
-  - "@semantic-release/commit-analyzer"
-  - "@semantic-release/release-notes-generator"
-  - "@semantic-release/changelog"
+  - - "@semantic-release/commit-analyzer"
+    - preset: conventionalcommits
+      releaseRules:
+        - type: feat
+          release: minor
+        - type: feature
+          release: minor
+        - type: fix
+          release: patch
+        - type: perf
+          release: patch
+        - type: revert
+          release: patch
+        - type: docs
+          release: false
+        - type: style
+          release: false
+        - type: chore
+          release: false
+        - type: refactor
+          release: patch
+        - type: test
+          release: false
+        - type: build
+          release: false
+        - type: ci
+          release: false
+        - type: deps
+          release: patch
+        - type: amend
+          release: patch
+  - - "@semantic-release/release-notes-generator"
+    - preset: conventionalcommits
+      writerOpts:
+        mainTemplate: |
+          {{> header}}
+
+          {{#each commitGroups}}
+
+          {{#if title}}
+          ### {{title}}
+
+          {{/if}}
+          {{#each commits}}
+          {{> commit root=@root}}
+          {{/each}}
+
+          {{/each}}
+          {{> footer}}
+        headerPartial: |
+          {{#if isPatch~}}
+            ##
+          {{~else~}}
+            #
+          {{~/if}} {{#if @root.linkCompare~}}
+            [{{version}}](
+            {{~#if @root.repository~}}
+              {{~#if @root.host}}
+                {{~@root.host}}/
+              {{~/if}}
+              {{~#if @root.owner}}
+                {{~@root.owner}}/
+              {{~/if}}
+              {{~@root.repository}}
+            {{~else}}
+              {{~@root.repoUrl}}
+            {{~/if~}}
+            /compare/{{previousTag}}...{{currentTag}})
+          {{~else}}
+            {{~version}}
+          {{~/if~}}
+          {{~#if title}} "{{title}}"
+          {{~/if}}
+          {{~#if date}} ({{date}})
+          {{/if}}
+        footerPartial: |
+          {{#if noteGroups}}
+          {{#each noteGroups}}
+
+          ### {{title}}
+
+          {{#each notes}}
+          * {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}}
+          {{/each}}
+          {{/each}}
+
+          {{/if}}
+      presetConfig:
+        types:
+          - type: feat
+            section: Features
+          - type: feature
+            section: Features
+          - type: fix
+            section: Bug Fixes
+          - type: perf
+            section: Performance Improvements
+          - type: revert
+            section: Reverts
+          - type: docs
+            section: Documentation
+          - type: style
+            section: Styles
+          - type: chore
+            section: Miscellaneous Chores
+            hidden: true
+          - type: refactor
+            section: Code Refactoring
+          - type: test
+            section: Tests
+          - type: build
+            section: Build System
+          - type: ci
+            section: Continuous Integration
+          - type: deps
+            section: Dependency Updates
+          - type: amend
+            section: Feature Amendments
+            hidden: true
+  - - "@semantic-release/changelog"
+    - changelogFile: CHANGELOG.md
   - - "@google/semantic-release-replace-plugin"
     - replacements:
         - files:
@@ -22,6 +140,7 @@ plugins:
           countMatches: true
   - - "@semantic-release/git"
     - assets:
+        - CHANGELOG.md
         - dist/index.js
         - package.json
         - package-lock.json
