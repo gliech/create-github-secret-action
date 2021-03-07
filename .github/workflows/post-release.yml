@@ -11,15 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get version prefix
+        id: version-prefix
         run: |
           GIT_REF=${{ github.ref }}
-          echo "::set-env name=VERSION_PREFIX::${GIT_REF:10:2}"
+          echo "::set-output name=main::${GIT_REF:10:2}"
 
       - name: Checkout major version branch
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ env.VERSION_PREFIX }}
+          ref: ${{ steps.version-prefix.outputs.main }}
 
       - name: Fast-forward branch to newest version
         run: |
