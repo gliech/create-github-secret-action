@@ -1,3 +1,17 @@
+## [1.4.4](https://github.com/gliech/create-github-secret-action/compare/v1.4.3...v1.4.4) (2021-03-07)
+
+
+### Dependency Updates
+
+* bump ini from 1.3.5 to 1.3.8 ([11d981c](https://github.com/gliech/create-github-secret-action/commit/11d981c76a77a3b8a74d6c9e95857dc6d101434b))
+
+
+### Continuous Integration
+
+* **deps:** bump actions/setup-node from v1 to v2.1.5 ([39324c6](https://github.com/gliech/create-github-secret-action/commit/39324c6caf5c4ad649900f462d9c5b275a6c7d3d))
+* **post-major-release:** replace set-env with set-output ([0bd1195](https://github.com/gliech/create-github-secret-action/commit/0bd11956ce4446f81f0631b2fe64a5a70b3f3090))
+* **post-release:** replace set-env with set-output ([df8d45b](https://github.com/gliech/create-github-secret-action/commit/df8d45bdf32486e448352a6c1d2526c26a0fde5e))
+
 ## [1.4.3](https://github.com/gliech/create-github-secret-action/compare/v1.4.2...v1.4.3) (2020-11-14)
 
 
