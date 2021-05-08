@@ -44,13 +44,13 @@ steps:
 ## Inputs
 
 #### `name`
-**Required** Name of the secret that you want to create/update.
+**(Required)** Name of the secret that you want to create/update.
 
 #### `value`
-**Required** Value of the secret that you want to create/update.
+**(Required)** Value of the secret that you want to create/update.
 > This action cannot mask the provided secret value in workflow logs. If you do
-> not want the value to appear the outputs of your workflow runs, it has to be
-> masked before it is provided to this action as input.
+> not want the secret value to appear in the output of your workflow run, you
+> have to mask it before you provide it to this action as input.
 
 #### `location`
 Name of a GitHub repository or organization where you want to create/update a
@@ -58,7 +58,7 @@ secret. Expects the notation `owner/repo` for repositories. Defaults to the
 repository that invoked the workflow.
 
 #### `pa_token`
-**Required** Personal access token with permission to modify repository or
+**(Required)** Personal access token with permission to modify repository or
 organization secrets.
 > For more information on PATs see the GitHub docs article on [creating a
 > personal access token][1]. The GitHub Secrets API requires the `repo` scope to
