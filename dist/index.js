@@ -1,123 +1,32 @@
-module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 2932:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const core = __nccwpck_require__(2186)
-const github = __nccwpck_require__(5438)
-const sodium = __nccwpck_require__(7637)
-
-class GithubLocation {
-  constructor(location_input) {
-    this.type = "repository"
-    this.short_type = "Repo"
-    if (!location_input) {
-      const context = github.context
-      this.data = context.repo
-    } else if (location_input.includes("/")) {
-      const [owner, repo] = location_input.split("/")
-      this.data = {owner, repo}
-    } else {
-      this.type = "organization"
-      this.short_type = "Org"
-      this.data = {org: location_input}
-    }
-  }
-  toString() {
-    return Object.values(this.data).join("/")
-  }
-}
-
-async function run() {
-  try {
-    // Get all inputs
-    const input_name = core.getInput("name")
-    const input_value = core.getInput("value")
-
-    const input_location = core.getInput("location")
-    const secret_target = new GithubLocation(input_location)
-
-    const input_pat = core.getInput("pa_token")
-    const octokit = github.getOctokit(input_pat)
-    const get_public_key = octokit.actions[`get${secret_target.short_type}PublicKey`]
-    const upsert_secret = octokit.actions[`createOrUpdate${secret_target.short_type}Secret`]
-
-    let org_arguments = {}
-    if (secret_target.type == "organization") {
-      const input_visibility = core.getInput("org_visibility")
-      if (["all", "private"].includes(input_visibility)) {
-        org_arguments = { visibility: input_visibility }
-      } else {
-        org_arguments = {
-          visibility: "selected",
-          selected_repositoy_ids: input_visibility.split(",").map(i => i.trim())
-        }
-      }
-    }
-
-    // Retrieve repository public key and encrypt secret value
-    core.info(`Retrieving public key for ${secret_target.type} '${secret_target}'`)
-    const { data: public_key } = await get_public_key(secret_target.data)
-
-    core.info("Encrypting secret value")
-    const plain_value_bytes = Buffer.from(input_value)
-    const public_key_bytes = Buffer.from(public_key.key, "base64")
-    const secret_value_bytes = sodium.seal(plain_value_bytes, public_key_bytes)
-    const signed_secret_value = Buffer.from(secret_value_bytes).toString("base64")
-
-    // Create or update secret
-    core.info(`Setting ${secret_target.type} secret '${input_name}'`)
-    const { status } = await upsert_secret({
-      ...secret_target.data,
-      secret_name: input_name,
-      encrypted_value: signed_secret_value,
-      key_id: public_key.key_id,
-      ...org_arguments
-    })
-
-    const response_codes = {
-      201: "created",
-      204: "updated"
-    }
-
-    if (status in response_codes) {
-      core.info(
-        `Successfully ${response_codes[status]} secret '${input_name}' in ` +
-        `${secret_target.type} '${secret_target}'`
-      )
-    } else {
-      core.warn(
-        `Encountered unexpected HTTP status code while creating secret ` +
-        `'${input_name}'. Epected one of '201', '204' but got '${status}'`
-      )
-    }
-
-    core.setOutput("status", status)
-  } catch (err) {
-    core.setFailed(err.message)
-  }
-}
-
-run()
-
-
-/***/ }),
 
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.issue = exports.issueCommand = void 0;
 const os = __importStar(__nccwpck_require__(2087));
 const utils_1 = __nccwpck_require__(5278);
 /**
@@ -196,6 +105,25 @@ function escapeProperty(s) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -205,14 +133,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(5278);
@@ -279,7 +201,9 @@ function addPath(inputPath) {
 }
 exports.addPath = addPath;
 /**
- * Gets the value of an input.  The value is also trimmed.
+ * Gets the value of an input.
+ * Unless trimWhitespace is set to false in InputOptions, the value is also trimmed.
+ * Returns an empty string if the value is not defined.
  *
  * @param     name     name of the input to get
  * @param     options  optional. See InputOptions.
@@ -290,9 +214,34 @@ function getInput(name, options) {
     if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
     }
+    if (options && options.trimWhitespace === false) {
+        return val;
+    }
     return val.trim();
 }
 exports.getInput = getInput;
+/**
+ * Gets the input value of the boolean type in the YAML 1.2 "core schema" specification.
+ * Support boolean input list: `true | True | TRUE | false | False | FALSE` .
+ * The return value is also in boolean type.
+ * ref: https://yaml.org/spec/1.2/spec.html#id2804923
+ *
+ * @param     name     name of the input to get
+ * @param     options  optional. See InputOptions.
+ * @returns   boolean
+ */
+function getBooleanInput(name, options) {
+    const trueValue = ['true', 'True', 'TRUE'];
+    const falseValue = ['false', 'False', 'FALSE'];
+    const val = getInput(name, options);
+    if (trueValue.includes(val))
+        return true;
+    if (falseValue.includes(val))
+        return false;
+    throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}\n` +
+        `Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+}
+exports.getBooleanInput = getBooleanInput;
 /**
  * Sets the value of an output.
  *
@@ -301,6 +250,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -442,14 +392,27 @@ exports.getState = getState;
 "use strict";
 
 // For internal use, subject to change.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.issueCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(5747));
@@ -480,6 +443,7 @@ exports.issueCommand = issueCommand;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.toCommandValue = void 0;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -9096,8 +9060,9 @@ module.exports = require("zlib");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -9122,10 +9087,109 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(2932);
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const core = __nccwpck_require__(2186)
+const github = __nccwpck_require__(5438)
+const sodium = __nccwpck_require__(7637)
+
+class GithubLocation {
+  constructor(location_input) {
+    this.type = "repository"
+    this.short_type = "Repo"
+    if (!location_input) {
+      const context = github.context
+      this.data = context.repo
+    } else if (location_input.includes("/")) {
+      const [owner, repo] = location_input.split("/")
+      this.data = {owner, repo}
+    } else {
+      this.type = "organization"
+      this.short_type = "Org"
+      this.data = {org: location_input}
+    }
+  }
+  toString() {
+    return Object.values(this.data).join("/")
+  }
+}
+
+async function run() {
+  try {
+    // Get all inputs
+    const input_name = core.getInput("name")
+    const input_value = core.getInput("value")
+
+    const input_location = core.getInput("location")
+    const secret_target = new GithubLocation(input_location)
+
+    const input_pat = core.getInput("pa_token")
+    const octokit = github.getOctokit(input_pat)
+    const get_public_key = octokit.actions[`get${secret_target.short_type}PublicKey`]
+    const upsert_secret = octokit.actions[`createOrUpdate${secret_target.short_type}Secret`]
+
+    let org_arguments = {}
+    if (secret_target.type == "organization") {
+      const input_visibility = core.getInput("org_visibility")
+      if (["all", "private"].includes(input_visibility)) {
+        org_arguments = { visibility: input_visibility }
+      } else {
+        org_arguments = {
+          visibility: "selected",
+          selected_repositoy_ids: input_visibility.split(",").map(i => i.trim())
+        }
+      }
+    }
+
+    // Retrieve repository public key and encrypt secret value
+    core.info(`Retrieving public key for ${secret_target.type} '${secret_target}'`)
+    const { data: public_key } = await get_public_key(secret_target.data)
+
+    core.info("Encrypting secret value")
+    const plain_value_bytes = Buffer.from(input_value)
+    const public_key_bytes = Buffer.from(public_key.key, "base64")
+    const secret_value_bytes = sodium.seal(plain_value_bytes, public_key_bytes)
+    const signed_secret_value = Buffer.from(secret_value_bytes).toString("base64")
+
+    // Create or update secret
+    core.info(`Setting ${secret_target.type} secret '${input_name}'`)
+    const { status } = await upsert_secret({
+      ...secret_target.data,
+      secret_name: input_name,
+      encrypted_value: signed_secret_value,
+      key_id: public_key.key_id,
+      ...org_arguments
+    })
+
+    const response_codes = {
+      201: "created",
+      204: "updated"
+    }
+
+    if (status in response_codes) {
+      core.info(
+        `Successfully ${response_codes[status]} secret '${input_name}' in ` +
+        `${secret_target.type} '${secret_target}'`
+      )
+    } else {
+      core.warn(
+        `Encountered unexpected HTTP status code while creating secret ` +
+        `'${input_name}'. Epected one of '201', '204' but got '${status}'`
+      )
+    }
+
+    core.setOutput("status", status)
+  } catch (err) {
+    core.setFailed(err.message)
+  }
+}
+
+run()
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;

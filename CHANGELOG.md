@@ -1,3 +1,16 @@
+## [1.4.5](https://github.com/gliech/create-github-secret-action/compare/v1.4.4...v1.4.5) (2021-06-07)
+
+
+### Documentation
+
+* small fix for better readability ([356de66](https://github.com/gliech/create-github-secret-action/commit/356de66028cee4d959a00ddf79a51992e334ee26))
+
+
+### Dependency Updates
+
+* bump @actions/core from 1.2.6 to 1.3.0 ([d14d023](https://github.com/gliech/create-github-secret-action/commit/d14d023181d88ab80da1168655cdf73873beaf96))
+* bump lodash from 4.17.20 to 4.17.21 ([51da82c](https://github.com/gliech/create-github-secret-action/commit/51da82cfd95802f352be7fb068da454550f7b499))
+
 ## [1.4.4](https://github.com/gliech/create-github-secret-action/compare/v1.4.3...v1.4.4) (2021-03-07)
 
 
