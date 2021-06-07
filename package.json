@@ -1,6 +1,6 @@
 {
   "name": "create-github-secret-action",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "private": "true",
   "description": "Create or update a Github Secret",
   "main": "dist/index.js",
@@ -17,13 +17,13 @@
     "@google/semantic-release-replace-plugin": "^1.0.2",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "@vercel/ncc": "^0.27.0",
-    "semantic-release": "^17.4.2",
-    "conventional-changelog-conventionalcommits": "^4.5.0"
+    "@vercel/ncc": "^0.28.6",
+    "semantic-release": "^17.4.3",
+    "conventional-changelog-conventionalcommits": "^4.6.0"
   },
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
     "tweetsodium": "0.0.5"
   }
 }
