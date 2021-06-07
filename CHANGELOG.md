@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/gliech/create-github-secret-action/compare/v1.4.5...v1.4.6) (2021-06-07)
+
+
+### Dependency Updates
+
+* bump @actions/core from 1.3.0 to 1.4.0 ([f6d23cd](https://github.com/gliech/create-github-secret-action/commit/f6d23cd8741afad8da348397e3ec4372040b29ad))
+
 ## [1.4.5](https://github.com/gliech/create-github-secret-action/compare/v1.4.4...v1.4.5) (2021-06-07)
 
 
