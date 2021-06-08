@@ -34,8 +34,8 @@ async function run() {
 
     const input_pat = core.getInput("pa_token")
     const octokit = github.getOctokit(input_pat)
-    const get_public_key = octokit.actions[`get${secret_target.short_type}PublicKey`]
-    const upsert_secret = octokit.actions[`createOrUpdate${secret_target.short_type}Secret`]
+    const get_public_key = octokit.rest.actions[`get${secret_target.short_type}PublicKey`]
+    const upsert_secret = octokit.rest.actions[`createOrUpdate${secret_target.short_type}Secret`]
 
     let org_arguments = {}
     if (secret_target.type == "organization") {
