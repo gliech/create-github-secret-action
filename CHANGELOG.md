@@ -1,3 +1,15 @@
+## [1.4.7](https://github.com/gliech/create-github-secret-action/compare/v1.4.6...v1.4.7) (2021-06-08)
+
+
+### Bug Fixes
+
+* **index.js:** use new octokit endpoints https://github.com/actions/toolkit/pull/783 ([be627f4](https://github.com/gliech/create-github-secret-action/commit/be627f40ec1ab30cf96be06314e4318cb9dcfb2f))
+
+
+### Dependency Updates
+
+* bump @actions/github from 4.0.0 to 5.0.0 ([1ea7757](https://github.com/gliech/create-github-secret-action/commit/1ea7757988206fb0ccc0050940b9c8dc43ce7117))
+
 ## [1.4.6](https://github.com/gliech/create-github-secret-action/compare/v1.4.5...v1.4.6) (2021-06-07)
 
 
