@@ -1,3 +1,16 @@
+## [1.4.8](https://github.com/gliech/create-github-secret-action/compare/v1.4.7...v1.4.8) (2021-08-21)
+
+
+### Continuous Integration
+
+* **deps:** bump actions/setup-node from 2.1.5 to 2.2.0 ([92486d7](https://github.com/gliech/create-github-secret-action/commit/92486d701a6073570379fad133bbb94a32ea9186))
+* **deps:** bump actions/setup-node from 2.2.0 to 2.4.0 ([1284092](https://github.com/gliech/create-github-secret-action/commit/1284092b333a17a37885d60c7f4cc7cc92f750fc))
+
+
+### Dependency Updates
+
+* bump @actions/core from 1.4.0 to 1.5.0 ([c39c72a](https://github.com/gliech/create-github-secret-action/commit/c39c72a624bea6cdf8b96025e327817792ecf49d))
+
 ## [1.4.7](https://github.com/gliech/create-github-secret-action/compare/v1.4.6...v1.4.7) (2021-06-08)
 
 
