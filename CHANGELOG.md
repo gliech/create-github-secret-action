@@ -1,3 +1,10 @@
+## [1.4.10](https://github.com/gliech/create-github-secret-action/compare/v1.4.9...v1.4.10) (2022-02-18)
+
+
+### Dependency Updates
+
+* bump node-fetch from 2.6.5 to 2.6.7 ([5c032ed](https://github.com/gliech/create-github-secret-action/commit/5c032ed801e68907d9127a2a7e896c0f016f6505))
+
 ## [1.4.9](https://github.com/gliech/create-github-secret-action/compare/v1.4.8...v1.4.9) (2021-10-30)
 
 
