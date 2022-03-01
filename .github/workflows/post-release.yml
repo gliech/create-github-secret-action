@@ -17,7 +17,7 @@ jobs:
           echo "::set-output name=main::${GIT_REF:10:2}"
 
       - name: Checkout major version branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ steps.version-prefix.outputs.main }}
