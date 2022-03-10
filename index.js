@@ -55,7 +55,7 @@ async function run() {
       }
     }
 
-    // Add optional environemnt argument if supplied
+    // Add optional environment argument if supplied
     let environment_arguments = {}
     if (secret_target.type == "environment") {
       environment_arguments = {
