@@ -3,9 +3,13 @@ const github = require("@actions/github")
 const sodium = require("tweetsodium")
 
 class GithubLocation {
-  constructor(location_input) {
+  constructor(location_input, environment_input) {
     this.type = "repository"
     this.short_type = "Repo"
+    if (environment_input) {
+      this.type = "environment"
+      this.short_type = "Environment"
+    }
     if (!location_input) {
       const context = github.context
       this.data = context.repo
@@ -30,7 +34,8 @@ async function run() {
     const input_value = core.getInput("value")
 
     const input_location = core.getInput("location")
-    const secret_target = new GithubLocation(input_location)
+    const input_environment = core.getInput("environment")
+    const secret_target = new GithubLocation(input_location, input_environment)
 
     const input_pat = core.getInput("pa_token")
     const octokit = github.getOctokit(input_pat)
@@ -47,6 +52,14 @@ async function run() {
           visibility: "selected",
           selected_repositoy_ids: input_visibility.split(",").map(i => i.trim())
         }
+      }
+    }
+
+    // Add optional environemnt argument if supplied
+    let environment_arguments = {}
+    if (secret_target.type == "environment") {
+      environment_arguments = {
+        environment: input_environment
       }
     }
 
@@ -67,7 +80,8 @@ async function run() {
       secret_name: input_name,
       encrypted_value: signed_secret_value,
       key_id: public_key.key_id,
-      ...org_arguments
+      ...org_arguments,
+      ...environment_arguments
     })
 
     const response_codes = {
