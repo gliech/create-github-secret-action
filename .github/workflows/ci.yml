@@ -151,6 +151,80 @@ jobs:
         run: echo "::error::Expected HTTP status code 204 got
           ${{steps.self.outputs.status}}"; exit 1
 
+  test_environment_create:
+    name: test environment secret
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      ENVIRONMENT_NAME: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: main
+          path: dist
+
+      - name: Get repository info
+        uses: octokit/request-action@v2.x
+        id: get_repo
+        with:
+          route: GET /repos/:repository
+          repository: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
+
+      - name: Parse repository id
+        run: echo "REPOSITORY_ID=${{ fromJson(steps.get_repo.outputs.data).id }}" >> $GITHUB_ENV
+
+      - name: Create test environment
+        uses: octokit/request-action@v2.x
+        with:
+          route: PUT /repos/:repository/environments/:environment_name
+          repository: ${{ github.repository }}
+          environment_name: ${{ env.ENVIRONMENT_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
+
+      - name: Create an environment secret
+        id: self
+        uses: ./
+        with:
+          name: TEST_${{ github.sha }}
+          value: test
+          environment: ${{ env.ENVIRONMENT_NAME }}
+          pa_token: ${{ secrets.PA_TOKEN_PIPELINE }}
+
+      - name: Assert action output
+        if: steps.self.outputs.status != '201'
+        run: echo "::error::Expected HTTP status code 201 got
+          ${{steps.self.outputs.status}}"; exit 1
+
+      - name: Confirm secret creation
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repositories/:repository_id/environments/:environment_name/secrets/:secret_name
+          repository_id: ${{ env.REPOSITORY_ID }}
+          secret_name: TEST_${{ github.sha }}
+          environment_name: ${{ env.ENVIRONMENT_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
+
+      - name: Delete secret
+        if: always()
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repositories/:repository_id/environments/:environment_name/secrets/:secret_name
+          repository_id: ${{ env.REPOSITORY_ID }}
+          secret_name: TEST_${{ github.sha }}
+          environment_name: ${{ env.ENVIRONMENT_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN_PIPELINE }}
+
   test_organization:
     name: test organization secret
     runs-on: ubuntu-latest
@@ -190,6 +264,7 @@ jobs:
       - test_repo_location
       - test_update
       - test_organization
+      - test_environment_create
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

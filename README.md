@@ -41,6 +41,18 @@ steps:
       pa_token: ${{ secrets.PAT_STRATEGIC_AIR_COMMAND }}
 ```
 
+Create an environment secret (in the repository where the workflow file is 
+located):
+```yaml
+steps:
+  - uses: gliech/create-github-secret-action@v1
+    with:
+      name: FORCE_DOME_PASSWORD
+      value: Brightmoon
+      pa_token: ${{ secrets.PA_TOKEN }}
+      environment: production
+```
+
 ## Inputs
 
 #### `name`
@@ -56,6 +68,10 @@ steps:
 Name of a GitHub repository or organization where you want to create/update a
 secret. Expects the notation `owner/repo` for repositories. Defaults to the
 repository that invoked the workflow.
+
+#### `environment`
+Name of the environment where you want to create/update a secret. Not valid
+for organizations and the environment must already exist.
 
 #### `pa_token`
 **(Required)** Personal access token with permission to modify repository or

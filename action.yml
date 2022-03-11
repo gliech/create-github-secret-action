@@ -11,6 +11,9 @@ inputs:
     description: Name of a GitHub repository or organization where you want to
       create/update a secret
     required: false
+  environment:
+    description: Name of the environment where this secret should be created. Only valid for repository secrets
+    required: false
   org_visibility:
     description: Visibility setting for organization secrets. Accepts `all`,
       `private` or a comma-seperated list of GitHub repository IDs
