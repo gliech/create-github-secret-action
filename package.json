@@ -24,6 +24,6 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
-    "tweetsodium": "0.0.5"
+    "tweetsodium": "0.0.6"
   }
 }
