@@ -14,12 +14,12 @@
   "license": "MIT",
   "repository": "github:gliech/create-github-secret-action",
   "devDependencies": {
-    "@google/semantic-release-replace-plugin": "1",
+    "semantic-release-replace-plugin": "1",
     "@semantic-release/changelog": "6",
     "@semantic-release/git": "10",
     "@vercel/ncc": "0",
-    "semantic-release": "19",
-    "conventional-changelog-conventionalcommits": "4"
+    "semantic-release": "21",
+    "conventional-changelog-conventionalcommits": "6"
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
