@@ -15,7 +15,7 @@ inputs:
     description: Visibility setting for organization secrets. Accepts `all`,
       `private` or a comma-seperated list of GitHub repository IDs
     required: false
-    default: 'private'
+    default: "private"
   pa_token:
     description: Personal access token with permission to modify repository or
       organization secrets
@@ -25,7 +25,7 @@ outputs:
     description: HTTP Status Code of the request against the GitHub API that
       created/updated the secret
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
 branding:
   color: yellow
